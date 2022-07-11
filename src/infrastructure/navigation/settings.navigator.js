@@ -1,6 +1,6 @@
 import React from "react";
 import { SettingsScreen } from "../../features/settings/screen/settings.screen";
-
+import { CameraScreen } from "../../features/settings/screen/camera.screen";
 import {
   createStackNavigator,
   CardStyleInterpolators,
@@ -25,6 +25,7 @@ export const SettingsNavigator = ({ route, navigation }) => {
         component={SettingsScreen}
       />
       <SettingsStack.Screen name="Favourites" component={FavouritesScreen} />
+      <SettingsStack.Screen name="Camera" component={CameraScreen} />
     </SettingsStack.Navigator>
   );
 };
