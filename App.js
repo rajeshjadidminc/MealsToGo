@@ -3,11 +3,7 @@ import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 import { ThemeProvider } from "styled-components/native";
 import { theme } from "./src/infrastructure/theme";
 import { Navigation } from "./src/infrastructure/navigation/index";
-import { RestaurantContextProvider } from "./src/services/restaurants/restaurants.context";
-import { LocationContextProvider } from "./src/services/location/location.context";
-import { FavouritesContextProvider } from "./src/services/favourites/favourites.context";
-import { AuthenticationContextProvider } from "./src/services/authentication/authentication.context";
-import { initializeApp } from "firebase/app";
+
 import {
   useFonts as useOswald,
   Oswald_400Regular,
@@ -18,16 +14,7 @@ import {
   Lato_400Regular,
   Lato_700Bold,
 } from "@expo-google-fonts/lato";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCr_guOWZBRjb3pS8vpBLUiCq4T26_416o",
-  authDomain: "mealstogo-837ea.firebaseapp.com",
-  projectId: "mealstogo-837ea",
-  storageBucket: "mealstogo-837ea.appspot.com",
-  messagingSenderId: "527263882292",
-  appId: "1:527263882292:web:3d6ce1844e8681f5a2fe61",
-};
-const app = initializeApp(firebaseConfig);
+import { AuthenticationContextProvider } from "./src/services/authentication/authentication.context";
 
 export default function App() {
   const [oswaldLoaded] = useOswald({
@@ -46,13 +33,7 @@ export default function App() {
     <>
       <ThemeProvider theme={theme}>
         <AuthenticationContextProvider>
-          <FavouritesContextProvider>
-            <LocationContextProvider>
-              <RestaurantContextProvider>
-                <Navigation />
-              </RestaurantContextProvider>
-            </LocationContextProvider>
-          </FavouritesContextProvider>
+          <Navigation />
         </AuthenticationContextProvider>
       </ThemeProvider>
       <ExpoStatusBar style="auto" />
