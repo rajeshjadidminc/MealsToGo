@@ -10,13 +10,14 @@ import {
   Icon,
   Info,
   RatingView,
-  ResturantCard,
-  ResturantCardCover,
+  RestaurantCard,
+  RestaurantCardCover,
   Section,
   SectionEnd,
-} from "./resturant-info-card-style";
+} from "./restaurant-info-card-style";
+import { Favourite } from "../../../components/favourites/favourite.component";
 
-export const RestuarntInfoCard = ({ restuarant = {} }) => {
+export const RestaurantInfoCard = ({ restaurant = {} }) => {
   const {
     name = "",
     icon = "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/lodging-71.png",
@@ -28,13 +29,13 @@ export const RestuarntInfoCard = ({ restuarant = {} }) => {
     rating = 4.5,
     isClosedTemporarily = true,
     placeId,
-  } = restuarant;
+  } = restaurant;
   const ratingArray = Array.from(new Array(Math.floor(rating)));
-
   return (
     <>
-      <ResturantCard elevation={5}>
-        <ResturantCardCover key={name} source={{ uri: photos[0] }} />
+      <RestaurantCard elevation={5}>
+        <Favourite restaurant={restaurant} />
+        <RestaurantCardCover key={name} source={{ uri: photos[0] }} />
         <Info>
           <Text variant="body">{name}</Text>
           <Section>
@@ -62,7 +63,7 @@ export const RestuarntInfoCard = ({ restuarant = {} }) => {
           </Section>
           <Address>{address}</Address>
         </Info>
-      </ResturantCard>
+      </RestaurantCard>
     </>
   );
 };

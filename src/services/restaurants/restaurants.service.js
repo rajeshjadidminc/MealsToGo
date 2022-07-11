@@ -1,7 +1,7 @@
 import { mockImages, mocks } from "./mock";
 import camelize from "camelize";
 
-export const resturantsRequest = (location) => {
+export const restaurantsRequest = (location) => {
   return new Promise((resolve, reject) => {
     const mock = mocks[location];
     if (!mock) {
@@ -24,6 +24,5 @@ export const restaurantsTransform = ({ results = [] }) => {
       isClosedTemporarily: restaurant.business_status === "CLOSED_TEMPORARILY",
     };
   });
-
   return camelize(mappedResults);
 };

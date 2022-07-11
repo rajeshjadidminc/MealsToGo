@@ -1,14 +1,13 @@
 import React from "react";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
-import { RestuarantsScreen } from "./src/features/restaurants/screens/resturants.screen";
 import { ThemeProvider } from "styled-components/native";
 import { theme } from "./src/infrastructure/theme";
-import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Text } from "./src/components/typography/text.component";
-import { SafeAreaViewMain } from "./src/components/utility/safe-area-component";
-import Ionicons from "@expo/vector-icons/Ionicons";
-
+import { Navigation } from "./src/infrastructure/navigation/index";
+import { RestaurantContextProvider } from "./src/services/restaurants/restaurants.context";
+import { LocationContextProvider } from "./src/services/location/location.context";
+import { FavouritesContextProvider } from "./src/services/favourites/favourites.context";
+import { AuthenticationContextProvider } from "./src/services/authentication/authentication.context";
+import { initializeApp } from "firebase/app";
 import {
   useFonts as useOswald,
   Oswald_400Regular,
@@ -19,9 +18,16 @@ import {
   Lato_400Regular,
   Lato_700Bold,
 } from "@expo-google-fonts/lato";
-import { RestuarntContextProvider } from "./src/services/restaurants/restaurants.context";
-import { Colors } from "react-native-paper";
-import { LocationContextProvider } from "./src/services/location/location.context";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCr_guOWZBRjb3pS8vpBLUiCq4T26_416o",
+  authDomain: "mealstogo-837ea.firebaseapp.com",
+  projectId: "mealstogo-837ea",
+  storageBucket: "mealstogo-837ea.appspot.com",
+  messagingSenderId: "527263882292",
+  appId: "1:527263882292:web:3d6ce1844e8681f5a2fe61",
+};
+const app = initializeApp(firebaseConfig);
 
 export default function App() {
   const [oswaldLoaded] = useOswald({
@@ -36,56 +42,18 @@ export default function App() {
   if (!oswaldLoaded || !latoLoaded) {
     return null;
   }
-
-  const Tab = createBottomTabNavigator();
-  const TAB_ICON = {
-    Restuarants: "md-restaurant",
-    Map: "md-map",
-    Settings: "md-settings",
-  };
-
-  const createScreenOptions = ({ route }) => {
-    const iconName = TAB_ICON[route.name];
-    return {
-      headerShown: false,
-      tabBarActiveTintColor: Colors.red800,
-      tabBarInactiveTintColor: "gray",
-      tabBarStyle: [
-        {
-          display: "flex",
-        },
-        null,
-      ],
-      tabBarIcon: ({ size, color }) => (
-        <Ionicons name={iconName} size={size} color={color} />
-      ),
-    };
-  };
-
-  const Settings = () => (
-    <SafeAreaViewMain>
-      <Text>Settings</Text>
-    </SafeAreaViewMain>
-  );
-  const Map = () => (
-    <SafeAreaViewMain>
-      <Text>Map</Text>
-    </SafeAreaViewMain>
-  );
   return (
     <>
       <ThemeProvider theme={theme}>
-        <LocationContextProvider>
-          <RestuarntContextProvider>
-            <NavigationContainer>
-              <Tab.Navigator screenOptions={createScreenOptions}>
-                <Tab.Screen name="Restuarants" component={RestuarantsScreen} />
-                <Tab.Screen name="Map" component={Map} />
-                <Tab.Screen name="Settings" component={Settings} />
-              </Tab.Navigator>
-            </NavigationContainer>
-          </RestuarntContextProvider>
-        </LocationContextProvider>
+        <AuthenticationContextProvider>
+          <FavouritesContextProvider>
+            <LocationContextProvider>
+              <RestaurantContextProvider>
+                <Navigation />
+              </RestaurantContextProvider>
+            </LocationContextProvider>
+          </FavouritesContextProvider>
+        </AuthenticationContextProvider>
       </ThemeProvider>
       <ExpoStatusBar style="auto" />
     </>
